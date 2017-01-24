@@ -1,0 +1,62 @@
+<!doctype html>
+<html ng-app="app">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta http-equiv="content-language" content="pt-br" />
+      <title>AngularJS: Single Page com ngView e ngRoute</title>
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+      
+     <!-- build:css css/third-party.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!-- endbuild -->
+
+    <!-- build:js lib/third-party.js -->
+    <!-- bower:js -->
+    <script src="lib/dependencies/angular.min.js"></script>
+    <script src="lib/dependencies/angular-resource.min.js"></script>
+    <script src="lib/dependencies/jquery.min.js"></script>
+    <script src="lib/dependencies/ui-bootstrap-tpls.min.js"></script>
+    <script src="lib/dependencies/ng-grid.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js script/all.js -->
+    <script src="app/app.js"></script>
+    <script src="app/controllers/controllers.js"></script>
+    <!-- endbuild -->
+      
+   </head>
+ 
+   <body>
+      <ul class="nav nav-tabs">
+         <li ng-class="{active: activetab == '/home'}"><a href="/home">Home</a></li>
+         <li ng-class="{active: activetab == '/empresa'}"><a href="/empresa">Empresa</a></li>
+         <li ng-class="{active: activetab == '/notafiscal'}"><a href="/notafiscal">Nota Fiscal</a></li>
+      </ul>
+ 
+      <div ng-view></div>
+      
+          <!-- build:css css/third-party.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!-- endbuild -->
+
+
+ 
+   </body>
+</html>

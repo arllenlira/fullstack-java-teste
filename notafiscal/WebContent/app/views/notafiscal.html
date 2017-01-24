@@ -1,0 +1,181 @@
+
+
+<body>
+
+
+<h1>Java EE - Angular Application</h1>
+
+<br/>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the feedback messages.-->
+<div class="message" ng-controller="alertMessagesController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<br>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the grid.-->
+<div class="grid" ng-controller="notaFiscalListController">
+    <div>
+        <h3>Notas Fiscais</h3>
+    </div>
+
+    <!-- Binds the grid component to be displayed. -->
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+
+    <!--  Bind the pagination component to be displayed. -->
+    <pagination direction-links="true" boundary-links="true"
+                total-items="notaFiscal.totalResults" items-per-page="notaFiscal.pageSize"
+                ng-model="notaFiscal.currentPage" ng-change="refreshGrid()">
+    </pagination>
+</div>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the form.-->
+<div class="form" ng-controller="notaFiscalFormController">
+    <!-- Verify notaFiscal, if there is no id present, that we are Adding a Empresa -->
+    <div ng-if="notaFiscal.id == null">
+        <h3>Lançar Nota Fiscal</h3>
+    </div>
+    <!-- Otherwise it's an Edit -->
+    <div ng-if="notaFiscal.id != null">
+        <h3>Editar Nota FIscal</h3>
+    </div>
+
+    <div>
+        <!-- Specify the function to be called on submit and disable HTML5 validation, since we're using Angular validation-->
+        <form name="notaFiscalForm" ng-submit="updateNotaFiscal()" novalidate>
+
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : notaFiscalForm.numero.$invalid && notaFiscalForm.numero.$dirty}">
+                <label for="numero">Número:</label> 
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : notaFiscalForm.numero.$valid && notaFiscalForm.numero.$dirty}"></span>
+
+                <input id="numero" name="numero" type="text" class="form-control" maxlength="50"
+                       ng-model="notaFiscal.numero"
+                       required ng-minlength="2" ng-maxlength="50"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="notaFiscalForm.numero.$error.required">Add Name.</p>
+                <p class="help-block" ng-show="notaFiscalForm.numero.$error.minlength">Name must be at least 2 characters long.</p>
+                <p class="help-block" ng-show="notaFiscalForm.numero.$error.maxlength">Name cannot be longer than 50 characters.</p>
+            </div>
+            
+            
+            <div class="form-group" ng-controller="listaEmpresas">
+               <label for="empresa">Empresa: x</label> 
+                <!-- Display a check when the field is valid and was modified -->
+                <select ng-model="notaFiscal.empresaId" ng-options="x.id as x.razaoSocial for x in listaEmpresas"></select>
+                
+            </div>
+            
+            <div class="form-group" ng-class="{'has-error' : notaFiscalForm.dataEmissao.$invalid && notaFiscalForm.dataEmissao.$dirty}">
+                <label for="dataEmissao">Data de Emissão:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : notaFiscalForm.dataEmissao.$valid && notaFiscalForm.dataEmissao.$dirty}"></span>
+
+                <input id="dataEmissao" name="dataEmissao" type="text" class="form-control" maxlength="50"
+                       ng-model="notaFiscal.dataEmissao"
+                       required ng-minlength="2" ng-maxlength="50"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="notaFiscalForm.dataEmissao.$error.required">Add Name.</p>
+                <p class="help-block" ng-show="notaFiscalForm.dataEmissao.$error.minlength">Name must be at least 2 characters long.</p>
+                <p class="help-block" ng-show="notaFiscalForm.dataEmissao.$error.maxlength">Name cannot be longer than 50 characters.</p>
+            </div>
+            
+            <div class="form-group" ng-class="{'has-error' : notaFiscalForm.descricao.$invalid && notaFiscalForm.descricao.$dirty}">
+                <label for="descricao">Descrição:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : notaFiscalForm.descricao.$valid && notaFiscalForm.descricao.$dirty}"></span>
+
+                <input id="descricao" name="descricao" type="text" class="form-control" maxlength="50"
+                       ng-model="notaFiscal.descricao"
+                       required ng-minlength="2" ng-maxlength="50"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="notaFiscalForm.descricao.$error.required">Add Name.</p>
+                <p class="help-block" ng-show="notaFiscalForm.descricao.$error.minlength">Name must be at least 2 characters long.</p>
+                <p class="help-block" ng-show="notaFiscalForm.descricao.$error.maxlength">Name cannot be longer than 50 characters.</p>
+            </div>
+            
+                                    <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : notaFiscalForm.valor.$invalid && notaFiscalForm.valor.$dirty}">
+                <label for="valor">Valor:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : notaFiscalForm.valor.$valid && notaFiscalForm.valor.$dirty}"></span>
+
+                <input id="valor" name="valor" type="text" class="form-control" maxlength="50"
+                       ng-model="notaFiscal.valor"
+                       required ng-minlength="2" ng-maxlength="50"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="notaFiscalForm.valor.$error.required">Add Name.</p>
+                <p class="help-block" ng-show="notaFiscalForm.valor.$error.minlength">Name must be at least 2 characters long.</p>
+                <p class="help-block" ng-show="notaFiscalForm.valor.$error.maxlength">Name cannot be longer than 50 characters.</p>
+            </div>
+            
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : empresaForm.anexo1.$invalid && empresaForm.anexo1.$dirty}">
+                <label for="anexo1">Anexo 1:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : empresaForm.anexo1.$valid && empresaForm.anexo1.$dirty}"></span>
+
+                <input id="anexo1" name="anexo1" type="url" class="form-control" maxlength="500"
+                       ng-model="empresa.anexo1"/>
+
+                <!-- Validation messages to be displayed on required and invalid. Type 'url' makes checks to a proper url format. -->
+                <p class="help-block" ng-show="empresaForm.anexo1.$error.required">Adicione um anexo1.</p>
+                <p class="help-block" ng-show="empresaForm.imageUrl.$invalid && empresaForm.anexo1.$dirty">Invalid Image URL.</p>
+            </div>
+
+            <div class="avatar" ng-if="empresa.anexo1">
+                <img ng-src="{{empresa.anexo1}}" width="400" height="250"/>
+            </div>
+            
+            
+                        <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : empresaForm.anexo2.$invalid && empresaForm.anexo2.$dirty}">
+                <label for="anexo2">Anexo 2:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : empresaForm.anexo2.$valid && empresaForm.anexo2.$dirty}"></span>
+
+                <input id="anexo2" name="anexo2" type="url" class="form-control" maxlength="500"
+                       ng-model="empresa.anexo2"/>
+
+                <!-- Validation messages to be displayed on required and invalid. Type 'url' makes checks to a proper url format. -->
+                <p class="help-block" ng-show="empresaForm.anexo2.$error.required">Adicione um anexo2.</p>
+                <p class="help-block" ng-show="empresaForm.imageUrl.$invalid && empresaForm.anexo2.$dirty">Invalid Image URL.</p>
+            </div>
+
+            <div class="avatar" ng-if="empresa.anexo2">
+                <img ng-src="{{empresa.anexo2}}" width="400" height="250"/>
+            </div>
+            
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : empresaForm.anexo3.$invalid && empresaForm.anexo3.$dirty}">
+                <label for="anexo3">Anexo 1:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : empresaForm.anexo3.$valid && empresaForm.anexo3.$dirty}"></span>
+
+                <input id="anexo3" name="anexo3" type="url" class="form-control" maxlength="500"
+                       ng-model="empresa.anexo3"/>
+
+                <!-- Validation messages to be displayed on required and invalid. Type 'url' makes checks to a proper url format. -->
+                <p class="help-block" ng-show="empresaForm.anexo3.$error.required">Adicione um anexo3.</p>
+                <p class="help-block" ng-show="empresaForm.imageUrl.$invalid && empresaForm.anexo3.$dirty">Invalid Image URL.</p>
+            </div>
+
+            <div class="avatar" ng-if="empresa.anexo3">
+                <img ng-src="{{empresa.anexo3}}" width="400" height="250"/>
+            </div>
+            
+            <!-- Form buttons. The 'Save' button is only enabled when the form is valid. -->
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" ng-click="clearForm()">Clear</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="notaFiscalForm.$invalid">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
